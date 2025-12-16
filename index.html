@@ -1,525 +1,114 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Chat IO</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
 
-        <link rel="stylesheet" href="https://bootswatch.com/5/materia/bootstrap.min.css">
-        <!-- CSS only -->
-        <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous"> -->
-        <style>
-            body {
-                background: #f9f9f9;
-            }
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Real‑time chat application built with Socket.io and Bootstrap 5" />
+    <title>Chat IO</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        crossorigin="anonymous" />
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="/css/style.css" />
+</head>
 
-            /* starts */
-            #chatWindow p {
-                border-radius: 1.15rem;
-                line-height: 1.25;
-                max-width: 75%;
-                padding: 0.5rem 0.875rem;
-                position: relative;
-                word-wrap: break-word;
-            }
-
-            #chatWindow p::before,
-            #chatWindow p::after {
-                bottom: -0.1rem;
-                content: "";
-                height: 1rem;
-                position: absolute;
-            }
-
-            p.from-me {
-                align-self: flex-end;
-                background-color: #248bf5;
-                color: #fff;
-                content: "";
-                clear: both;
-                display: table;
-                float: right;
-            }
-
-            p.from-me::before {
-                border-bottom-left-radius: 0.8rem 0.7rem;
-                border-right: 1rem solid #248bf5;
-                right: -0.35rem;
-                transform: translate(0, -0.1rem);
-            }
-
-            p.from-me::after {
-                background-color: #fff;
-                border-bottom-left-radius: 0.5rem;
-                right: -40px;
-                transform: translate(-30px, -2px);
-                width: 10px;
-            }
-
-            p[class^="from-"] {
-                margin: 0.5rem 0;
-                width: fit-content;
-            }
-
-            p.from-me ~ p.from-me {
-                margin: 0.25rem 0 0;
-            }
-
-            p.from-me ~ p.from-me:not(:last-child) {
-                margin: 0.25rem 0 0;
-            }
-
-            p.from-me ~ p.from-me:last-child {
-                margin-bottom: 0.5rem;
-            }
-
-
-            p.from-them {
-                align-items: flex-start;
-                background-color: #e5e5ea;
-                color: #000;
-                content: "";
-                clear: both;
-                display: table;
-            }
-
-            p.from-them:before {
-                border-bottom-right-radius: 0.8rem 0.7rem;
-                border-left: 1rem solid #e5e5ea;
-                left: -0.35rem;
-                transform: translate(0, -0.1rem);
-            }
-
-            p.from-them::after {
-                background-color: #fff;
-                border-bottom-right-radius: 0.5rem;
-                left: 20px;
-                transform: translate(-30px, -2px);
-                width: 10px;
-            }
-
-            p[class^="from-"].emoji {
-                background: none;
-                font-size: 2.5rem;
-            }
-
-            p[class^="from-"].emoji::before {
-                content: none;
-            }
-
-            .no-tail::before {
-                display: none;
-            }
-
-            .margin-b_none {
-                margin-bottom: 0 !important;
-            }
-
-            .margin-b_one {
-                margin-bottom: 1rem !important;
-            }
-
-            .margin-t_one {
-                margin-top: 1rem !important;
-            }
-
-            /* ends */
-
-            .container {
-                padding: 2%;
-            }
-
-            #chatWindow {
-                height: 300px;
-                min-width:  300px;
-            }
-
-            #mainWrapper {
-                display: none;
-            }
-
-            #chatroom {
-                display: none;
-            }
-
-            #chatWrapper {
-                float: left;
-                padding: 15px;
-                overflow-y: auto;
-                margin-bottom: 2%;
-                min-width:  300px;
-                 border-radius: 10px;
-                /* background: linear-gradient(145deg, #ffffff, #d8d8d8); */
-                box-shadow:  20px 20px 60px #cccccc, -20px -20px 60px #ffffff;
-            }
-
-
-            #userWrapper {
-                /* float: left; */
-                /* border: 1px solid #ccc; */
-                border-radius: 10px;
-                background: #ffffff;
-                padding: 10px;
-                box-shadow:  20px 20px 60px #cccccc, -20px -20px 60px #ffffff;
-                /* margin-left: 20px; */
-                /* width: 250px; */
-                /* max-height: 200px; */
-            }
-
-            #namesWrapper {
-                /* border: 1px solid #ccc;
-                border-radius: 4px;
-                background: #f4f4f4;
-                padding: 10px; */
-                text-align: center;
-                margin: 15% auto;
-            }
-
-            input[type="text"] {
-                margin-top: 5%;
-                height: 40px;
-                /* border: none;
-                border-bottom: 2px solid gray; */
-                margin: 2% 0 4% 0;
-            }
-
-            #error {
-                display: none;
-            }
-
-            .card {
-                border-radius: 10px;
-                width: 350px;
-                background: linear-gradient(145deg, #ffffff, #d8d8d8);
-                box-shadow:  20px 20px 60px #cccccc,
-                            -20px -20px 60px #ffffff;
-            }
-
-            p#typing {
-                width: 300px;
-                padding: 10px;
-                border-radius: 10px;
-                color:rgba(50,50,50,0.9);
-                background: linear-gradient(145deg, #ffffff, #d8d8d8);
-                box-shadow:  20px 20px 60px #cccccc,  -20px -20px 60px #ffffff;
-            }
-
-            p#errors {
-                width: 300px;
-                padding: 10px;
-                border-radius: 10px;
-                color:rgba(250,0,0,0.9);
-                background: linear-gradient(145deg, #ffffff, #d8d8d8);
-                box-shadow:  20px 20px 60px #cccccc,  -20px -20px 60px #ffffff;
-            }
-
-           
-        </style>
-    </head>
-    <body>
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="d-flex justify-content-center text-muted">
-                  
-                        <div id="namesWrapper">
-                            <!-- <div class="css-card">
-                                <div class="card-body">
-                                    <h4 class="card-title">
-                                        <h2>CHATROOM</h2>
-                                        <p>Create Username</p>
-                                    </h4>
-                                    <p class="card-text">
-                                        <div id="error" class="alert alert-danger" role="alert"></div>
-                                        <form id="usernameForm">
-                                            <div class="form-group">
-                                                <label class="col-form-label mt-4" for="username">Username</label>
-                                                <input type="text" class="form-control" placeholder="Username" id="username" autocomplete="off" />
-                                            </div>
-                                            <input type="submit" value="Submit" class="btn btn-primary btn-block" />
-                                        </form>
-                                    </p>
-                                </div>
-                            </div> -->
-
-                            <div class="card bg-light mb-3">
-                                <div class="card-header">
-                                    <h2>CHATROOM</h2>
-                                    <p>Create Username</p>
-                                </div>
-                                <div class="card-body">
-                                    <!-- <h4 class="card-title"></h4> -->
-                                    <p class="card-text">
-                                        <div id="error" class="alert alert-danger" role="alert"></div>
-                                        <form id="usernameForm">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="Username" id="username" autocomplete="off" />
-                                            </div>
-                                            <input type="submit" value="Submit" class="btn btn-primary btn-block" />
-                                        </form>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                    
-                <div class="" id="chatroom">
-                    <div class="col-lg-6">
-                        <h2>CHATROOM</h2>
-                    </div>
-                    <div class="col-lg-6" id="typing"></div>
-                    <div class="col-lg-6" id="errors"></div>
-                </div>    
-                    
-
-
-                <div class="row justify-content-center" id="mainWrapper">
-                    
-                    
-                        <div class="col-lg-8">
-                            
-                            <div id="chatWrapper" class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                <div id="chatWindow">
-                                    
-                                </div>
-                            </div>
-                            <div id="messageDiv" class="col-lg-4">
-                                <br><br>
-                                <form id="messageForm" class="message-card">
-                                    <div class="form-group">
-                                        <input type="text" name="message" class="form-control" placeholder="Say Something..." id="message" maxlength="250" autocomplete="off" />
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="submit" value="Submit" class="btn btn-primary btn-block" />
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="card bg-light mb-3" style="max-width: 20rem;">
-                            <!-- <div class="card-header">ACTIVE USERS</div> -->
-                            <div class="card-body">
-                                <h4 class="card-title">ACTIVE USERS</h4>
-                                <p class="card-text" id="users"></p>
-                            </div>
-                        </div>
-                        <!-- <div class="col-lg-4 text-muted">
-                            <div id="userWrapper">
-                                <h4>ACTIVE USERS</h4>
-                                <hr>
-                                <div id="users"></div>
-                            </div>
-                        </div> -->
-                </div>
-              
+<body>
+    <div class="container">
+        <header class="row mt-4 mb-3">
+            <div class="col text-center">
+                <h1>Chat IO</h1>
             </div>
-            
-            <div class="modal fade " id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="false">
-                <div class="modal-dialog ">
-                    <div class="modal-content ">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="errorModalLabel">Opps!</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </header>
+
+        <main>
+            <!-- Username entry (initial view) -->
+            <section id="namesWrapper" class="row justify-content-center" aria-label="Enter username">
+                <div class="col-lg-5 col-md-8">
+                    <div class="card mt-4">
+                        <div class="card-header text-center">
+                            <h2>Chatroom Login</h2>
+                            <p class="text-muted mb-0">Enter a username to join</p>
                         </div>
-                        <div class="modal-body">
-                            <p id="error-msg"></p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        <div class="card-body p-4">
+                            <div id="error" class="alert alert-danger" role="alert" style="display:none;"
+                                aria-live="assertive"></div>
+                            <form id="usernameForm" class="d-grid gap-3" novalidate>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Username" id="username"
+                                        autocomplete="off" required />
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-lg">Join Chat <i
+                                        class="fas fa-sign-in-alt ms-2"></i></button>
+                            </form>
                         </div>
                     </div>
+                </div>
+            </section>
+
+            <!-- Main chat UI (hidden until username set) -->
+            <section id="mainWrapper" class="row justify-content-center" style="display:none;"
+                aria-label="Chat interface">
+                <div class="col-lg-8 col-md-10">
+                    <div id="chatWrapper" class="card mb-3">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span class="fw-bold"><i class="fas fa-comments me-2"></i> Live Chat</span>
+                            <span class="badge bg-light text-dark border">Socket.io Powered</span>
+                        </div>
+                        <div class="card-body" id="chatWindow" aria-live="polite"></div>
+                    </div>
+
+                    <form id="messageForm" class="d-grid gap-2 mb-3" novalidate aria-label="Send message">
+                        <div class="input-group">
+                            <input type="text" name="message" class="form-control" placeholder="Type a message..."
+                                id="message" maxlength="255" autocomplete="off" required />
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </form>
+
+                    <div id="typing" class="mb-3 ps-2"></div>
+
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <h5 class="card-title text-muted fs-6 mb-3">Active Users</h5>
+                            <div id="usersList" class="d-flex flex-wrap"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal for error messages -->
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title text-danger" id="errorModalLabel"><i
+                            class="fas fa-exclamation-circle me-2"></i> Error</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-2 pb-4">
+                    <p id="error-msg" class="mb-0 fs-5"></p>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-secondary rounded-pill px-4"
+                        data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
-            
         </div>
-        
-        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-            crossorigin="anonymous"></script>
-        <script src="https://cdn.socket.io/3.1.3/socket.io.min.js"
-                integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh"
-                crossorigin="anonymous"></script>
+    </div>
 
-       
-        <script>
-            $(function(){
-                
-                var socket = io.connect();
-                var $messageForm = $('#messageForm');
-                var $message = $("#message");
-                var $chat = $("#chatWindow");
-                var $usernameForm = $("#usernameForm");
-                var $users = $("#users");
-                var $username = $("#username");
-                var $error = $("#error");
-                var $errors = $("#errors");
-                var $typing = $("#typing");
-                $typing.html("");
-                socket.emit("typing", $message.val());
-                var arr = [];
-                var itemYouWant = null;
-                var $toast = $(".toast");
-                var $errorModal = $("#errorModal")
-                var modelBody = $(".modal-body")
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/chat.js"></script>
+</body>
 
-                setInterval(function () {
-                    if ($message.val()) {
-                        socket.emit("typing", $message.val());
-                    }
-                }, 3000);
-
-                $usernameForm.submit(function (e) {
-                    e.preventDefault();
-                    if($username.val().length > 20) {
-                        $error.css("display", "block")
-                        $error.html("Username should not be greater than 20 letters.")
-                        return false;
-                    }
-
-                     if ($username.val().length == 0 ) {
-                        $error.css("display", "block")
-                        $error.html("Username should not be empty.")
-                        return false;
-                    }
-
-                    socket.emit("new user",  $username.val(), function(data) {
-                        if(data) {
-                            $("#namesWrapper").hide();
-                            $("#mainWrapper").show();
-                            $("#chatroom").show();
-                        } else {
-                            $error.css("display","block")
-                            $error.html("Username is taken.")
-                        }
-                    });
-                });
-
-                socket.on("usernames", function (data) {
-                    var html = "";
-                    for (let i = 0; i < data.length; i++) {
-                        html += data[i] + "<br>";
-                    }
-                    $users.html(html);
-                });
-
-                $messageForm.submit(function(e){
-                    e.preventDefault();
-                    if ($message.val().length > 200) {
-                        $errorModal.modal("show");
-                        $("#error-msg").html("Message should not be greater than 200 letters.");
-                        return false;
-                    }
-
-                    if ($message.val().length == 0) {
-                        $errorModal.modal("show");
-                        $("#error-msg").html("Can't send empty message.");
-                        return false;
-                    }
-
-
-                    var i =1;
-                    socket.emit("send message", { msg: $message.val(), id: socket.id, username: socket.username, count: i })
-                    $message.val("");
-                    $typing.html("");
-                });
-
-                socket.on("new message", function(data) {
-                    
-                    var colourArray = [
-                        '#0275d8',
-                        '#5cb85c',
-                        '#5bc0de',
-                        '#f0ad4e',
-                        '#d9534f',
-                        '#36896e',
-                        '#ff6f69',
-                        '#673888',
-                        '#d62976',
-                        '#962fbf',
-                        '#FC3468',
-                        '#9C0412'
-                    ];
-                    var randomNumber = Math.floor(Math.random() * colourArray.length);
-                    var dcolour = colourArray[randomNumber];
-                    // var colour = colourArray[randomNumber];
-
-                    var res = arr.some(checkUsername);
-                    // var colour = arr.some(getColor);
-
-                    function checkUsername(params) {
-                        if (params.user== data.user) {
-                            return 1;
-                        } else {
-                            return 0;
-                        }
-                    }
-
-                    // console.log('res : '+res);
-                    if (res) {
-                        arr.forEach((item) => {
-                            if (item.user == data.user) {
-                                itemYouWant = item;
-                            }
-                        });
-                        var colour = itemYouWant.color;
-                    }
-
-                    if (!res) {
-                         arr.push({
-                            user: data.user,
-                            id: socket.id,
-                            color: dcolour
-                        });
-
-                        var colour = dcolour;
-                    }
-                    // console.log(arr);
-
-                    if ((data.id==socket.id)) {
-                        $chat.append('<p class="from-me">' + data.msg + '</p>');
-                    } else {
-                        $chat.append('<p class="from-them"><span style="color:'+ colour+';"><strong>' + data.user + ' </strong></span><br>' + data.msg + '</p>');
-                    }
-                   
-                    // $chat.append("<strong>" + data.user + " : </strong>" + data.msg + "<br>");
-                    $typing.html("");
-                });
-
-                $message.keyup(function(e){
-                    
-                    var key = e.which;
-                    if (key != 13)  
-                    {
-                        if ($message.val()) {
-                            socket.emit("typing", $message.val());
-                            socket.on('typing', (data) => {
-                                $typing.html("");
-                                $typing.html("<p id='typing'  >" + data + " is typing...</p>");
-                            });
-                        } else {
-                            // socket.emit("typing", $message.val());
-                            $typing.html("");
-                        }
-                    }
-                });
-
-            });
-        </script>
-        
-        <!-- JavaScript Bundle with Popper -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-            crossorigin="anonymous"></script>
-            
-        <script src="" async defer></script>
-    </body>
 </html>

@@ -1,0 +1,158 @@
+/* Modern styling for Chat IO */
+body {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+h1.text-center {
+  color: #333;
+  font-weight: 300;
+  margin-bottom: 1.5rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+  padding: 2%;
+}
+
+.card {
+  border: none;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.85); /* Glassmorphism effect */
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.card-header {
+  background-color: transparent;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 1.5rem 1rem;
+}
+
+.card-header h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #444;
+}
+
+/* Chat window */
+#chatWindow {
+  height: 350px;
+  overflow-y: auto;
+  padding: 1rem;
+  background-color: rgba(249, 249, 249, 0.5);
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  scrollbar-width: thin;
+}
+
+#chatWindow::-webkit-scrollbar {
+  width: 6px;
+}
+#chatWindow::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 3px;
+}
+
+/* Chat Bubbles */
+#chatWindow p {
+  border-radius: 1.15rem;
+  line-height: 1.4;
+  max-width: 80%;
+  padding: 0.6rem 1rem;
+  position: relative;
+  word-wrap: break-word;
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+p.from-me {
+  align-self: flex-end;
+  background: linear-gradient(
+    135deg,
+    #248bf5,
+    #0069c0
+  ); /* Improved blue gradient */
+  color: #fff;
+  float: right;
+  clear: both;
+  border-bottom-right-radius: 0.2rem !important;
+}
+
+p.from-them {
+  background: #ffffff;
+  color: #333;
+  float: left;
+  clear: both;
+  border-bottom-left-radius: 0.2rem !important;
+}
+
+/* Usernames in chat */
+p.from-them span strong {
+  font-size: 0.85rem;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+/* Input Fields & Buttons */
+.form-control {
+  border-radius: 20px;
+  padding: 0.6rem 1.2rem;
+  border: 1px solid #ddd;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.form-control:focus {
+  box-shadow: 0 0 0 3px rgba(36, 139, 245, 0.25);
+  border-color: #248bf5;
+}
+
+.btn-primary {
+  border-radius: 20px;
+  padding: 0.6rem 1.5rem;
+  background: linear-gradient(135deg, #248bf5, #0069c0);
+  border: none;
+  box-shadow: 0 4px 6px rgba(36, 139, 245, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 8px rgba(36, 139, 245, 0.4);
+}
+
+/* Helper texts */
+#typing {
+  font-style: italic;
+  color: #777;
+  font-size: 0.9rem;
+  min-height: 1.5rem;
+}
+
+#error,
+#errors {
+  color: #dc3545;
+  font-weight: 500;
+}
+
+/* User List */
+#usersList {
+  font-size: 0.95rem;
+  padding: 0.5rem;
+}
+
+#usersList br {
+  display: block;
+  content: "";
+  margin-top: 5px;
+}
