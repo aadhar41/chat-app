@@ -3,7 +3,7 @@ $(function () {
     // 1. If on localhost, use local server.
     // 2. If on Netlify (production), you MUST replace the "" below with your Render/Railway URL.
     const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    const BACKEND_URL = isLocal ? "http://localhost:3001" : "https://chatio-rtc.netlify.app";
+    const BACKEND_URL = isLocal ? "http://localhost:3001" : "https://chat-app-o089.onrender.com";
 
     const socket = io(BACKEND_URL);
     const $usernameForm = $('#usernameForm');
