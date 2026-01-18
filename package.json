@@ -9,7 +9,8 @@
   "author": "Aadhar gaur",
   "license": "ISC",
   "dependencies": {
-    "socket.io": "*",
-    "express": "*"
+    "cors": "^2.8.5",
+    "express": "*",
+    "socket.io": "*"
   }
 }

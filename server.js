@@ -1,7 +1,13 @@
 const express = require('express'),
+    cors = require('cors'),
     app = express(),
     server = require("http").Server(app),
-    io = require("socket.io")(server);
+    io = require("socket.io")(server, {
+        cors: {
+            origin: "*", // Allow all origins for simplicity, can be restricted later
+            methods: ["GET", "POST"]
+        }
+    });
 usernames = [];
 
 
@@ -9,6 +15,7 @@ server.listen(process.env.PORT || 3001);
 
 console.log("Server running...");
 
+app.use(cors());
 app.use(express.static('public'));
 
 app.get("/", function (req, res) {

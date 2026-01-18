@@ -1,6 +1,8 @@
 /* Client-side Chat Logic */
 $(function () {
-    const socket = io();
+    // For local testing, use current origin. For production, replace with your backend URL.
+    const BACKEND_URL = ""; // e.g. "https://chat-app-backend.onrender.com"
+    const socket = io(BACKEND_URL);
     const $usernameForm = $('#usernameForm');
     const $messageForm = $('#messageForm');
     const $chat = $('#chatWindow');
