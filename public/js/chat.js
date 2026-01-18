@@ -1,7 +1,10 @@
 /* Client-side Chat Logic */
 $(function () {
-    // For local testing, use current origin. For production, replace with your backend URL.
-    const BACKEND_URL = ""; // e.g. "https://chat-app-backend.onrender.com"
+    // 1. If on localhost, use local server.
+    // 2. If on Netlify (production), you MUST replace the "" below with your Render/Railway URL.
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    const BACKEND_URL = isLocal ? "http://localhost:3001" : "https://chatio-rtc.netlify.app";
+
     const socket = io(BACKEND_URL);
     const $usernameForm = $('#usernameForm');
     const $messageForm = $('#messageForm');
