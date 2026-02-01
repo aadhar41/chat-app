@@ -46,6 +46,9 @@
 ### **Chat Room**
 ![Chat Room](public/images/chatroom-users.png)
 
+### **Empty Chat**
+![Empty Chat](public/images/chatroom-empty.png)
+
 ---
 
 ## **📦 Installation**
@@ -111,4 +114,20 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## **📝 License**
 
-This project is licensed under the ISC License.
+Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+
+## **👤 Author**
+
+**Aadhar Gaur**
+
+*   **GitHub**: [@aadhar41](https://github.com/aadhar41)
+*   **LinkedIn**: [aadhar-gaur-php](https://linkedin.com/in/aadhar-gaur-php)
+
+---
+
+## **🙏 Acknowledgments**
+
+*   Built with ❤️ using [Node.js](https://nodejs.org/) & [Socket.io](https://socket.io/)
+*   UI inspired by modern Glassmorphism trends
